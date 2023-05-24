@@ -21,7 +21,7 @@ const App = () => {
   const [alertMsg, setAlertMsg] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/questions")
+    fetch("https://fynzo.onrender.com/questions")
       .then((result) => result.json())
       .then((res) => {
         // console.log(questions);
