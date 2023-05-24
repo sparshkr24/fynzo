@@ -9,6 +9,7 @@ import Navbar from "./Components/Navbar/Navbar";
 import Footer from "./Components/Footer/Footer";
 import Alert from "./Components/Alert";
 import Submit from "./Components/Submit";
+import Loader from "./Components/Loader";
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -19,16 +20,22 @@ const App = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [alertMsg, setAlertMsg] = useState(null);
+  const [isLoading, setIsLoading] = useState(0);
 
   useEffect(() => {
+    setIsLoading(1);
+
     fetch("https://fynzo.onrender.com/questions")
       .then((result) => result.json())
       .then((res) => {
         // console.log(questions);
+
         setData(res.questions);
+        setIsLoading(0);
       })
       .catch(() => {
         console.log("error while fetching data");
+        setIsLoading(0);
       });
   }, []);
 
@@ -37,7 +44,7 @@ const App = () => {
       const answeredCount = Object.keys(answers).length;
       const totalCount = data.length;
       const percentage = (answeredCount / totalCount) * 100;
-      setProgress(percentage);
+      setProgress(percentage.toFixed(2));
     };
 
     calculateProgress();
@@ -49,24 +56,20 @@ const App = () => {
 
     // Check if the current question is required and has not been answered
     if (currentQuestion.required && !currentAnswer) {
-      console.log('restriction');
       setAlert("Please answer the current question before proceeding.");
       return;
     }
-    if(currentIndex === data.length -1){
-      console.log('Acknowledgment');
+    if (currentIndex === data.length - 1) {
       setAlert("Form Submitted Successfully.");
     }
-    
 
     if (currentIndex < data.length) {
       setCurrentIndex((prev) => prev + 1);
     }
 
-    if(currentIndex === 2 && currentAnswer == 'Male'){
-      setCurrentIndex(data.length)
+    if (currentIndex === 2 && currentAnswer == "Male") {
+      setCurrentIndex(data.length);
     }
-    
   };
 
   const handlePrev = () => {
@@ -94,9 +97,8 @@ const App = () => {
     <div className="overflow-x-hidden">
       <Navbar />
       {alertMsg ? <Alert message={alertMsg} /> : null}
-      {/* <Alert/> */}
 
-      {/* <Submit data={data} answers={answers}/> */}
+      {isLoading ? <Loader /> : null}
 
       <div className="sm:mx-0 flex justify-center items-center w-full ">
         <div id="MainContent">
@@ -112,8 +114,8 @@ const App = () => {
                         currentIndex={currentIndex}
                         handleAnswerChange={handleAnswerChange}
                         answers={answers}
+                        data={data}
                         handleNext={handleNext}
-                        handlePrev={handlePrev}
                       />
                     );
                   case 2:
@@ -123,8 +125,8 @@ const App = () => {
                         currentIndex={currentIndex}
                         handleAnswerChange={handleAnswerChange}
                         answers={answers}
+                        data={data}
                         handleNext={handleNext}
-                        handlePrev={handlePrev}
                       />
                     );
                   case 3:
@@ -135,7 +137,7 @@ const App = () => {
                         handleAnswerChange={handleAnswerChange}
                         answers={answers}
                         handleNext={handleNext}
-                        handlePrev={handlePrev}
+                        data={data}
                       />
                     );
                   case 4:
@@ -145,8 +147,8 @@ const App = () => {
                         currentIndex={currentIndex}
                         handleAnswerChange={handleAnswerChange}
                         answers={answers}
+                        data={data}
                         handleNext={handleNext}
-                        handlePrev={handlePrev}
                       />
                     );
                   case 5:
@@ -174,7 +176,7 @@ const App = () => {
               }
             })}
 
-            {currentIndex === data.length ? (
+            {currentIndex === data.length && !isLoading ? (
               <Submit answers={answers} data={data} />
             ) : null}
           </div>
@@ -182,21 +184,14 @@ const App = () => {
         </div>
       </div>
 
-      {/* {currentIndex === data.length ? null : (
-        <Footer
-          progress={progress}
-          data={data}
-          handleNext={handleNext}
-          handlePrev={handlePrev}
-        />
-      )} */}
+     
       <Footer
-          progress={progress}
-          data={data}
-          currentIndex={currentIndex}
-          handleNext={handleNext}
-          handlePrev={handlePrev}
-        />
+        progress={progress}
+        data={data}
+        currentIndex={currentIndex}
+        handleNext={handleNext}
+        handlePrev={handlePrev}
+      />
     </div>
   );
 };

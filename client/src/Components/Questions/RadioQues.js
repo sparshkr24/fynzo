@@ -1,5 +1,6 @@
 import React from "react";
 import star from '../../assets/star.png'
+import Buttons from "../Buttons";
 
 const RadioQues = ({
   question,
@@ -7,7 +8,7 @@ const RadioQues = ({
   handleAnswerChange,
   answers,
   handleNext,
-  handlePrev,
+  data
 }) => {
   const answer = answers[question.id] || "";
 
@@ -41,19 +42,8 @@ const RadioQues = ({
           ))}
         </ul>
         <br />
-        <button
-          className="disabled:cursor-not-allowed mr-4 py-2 px-12 rounded-2xl bg-red-600 text-white hover:bg-red-700 font-medium"
-          onClick={handleNext}
-          disabled={answers[question.id]?false:true}
-        >
-          Next
-        </button>
-        <button
-          className="py-2 px-4 rounded-2xl hover:bg-gray-400 hover:text-white font-medium border border-gray-200"
-          onClick={handleNext}
-        >
-          Skip
-        </button>
+        
+        <Buttons answers={answers} data={data} question={question} currentIndex={currentIndex} handleNext={handleNext}/>
       </div>
     </>
   );
