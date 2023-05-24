@@ -21,7 +21,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
     }
 
     questions = JSON.parse(data)
-    console.log(questions);
+    // console.log(questions);
 });
 
 app.get('/questions', (req, res)=>{

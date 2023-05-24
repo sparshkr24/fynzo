@@ -32,3 +32,30 @@ code {
     transform: translateY(0);
   }
 }
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(to bottom, #e6f3ff, #c1dbf0);
+}
+
+table th,
+table td {
+  padding: 12px;
+  border: 1px solid #8db2e3;
+}
+
+table th {
+  background-color: #4c86b5;
+  color: white;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #c7ddf3;
+}
+
+table tbody tr:hover {
+  background-color: #a3c9ed;
+}

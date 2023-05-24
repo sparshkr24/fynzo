@@ -7,7 +7,8 @@ import UploadQues from "./Components/Questions/UploadQues";
 import NotFound from "./Components/NotFound";
 import Navbar from "./Components/Navbar/Navbar";
 import Footer from "./Components/Footer/Footer";
-import { Transition } from "@headlessui/react";
+import Alert from "./Components/Alert";
+import Submit from "./Components/Submit";
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -17,6 +18,8 @@ const App = () => {
   const [progress, setProgress] = useState(0);
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [alertMsg, setAlertMsg] = useState(null);
+
   useEffect(() => {
     fetch("http://localhost:5000/questions")
       .then((result) => result.json())
@@ -41,19 +44,27 @@ const App = () => {
   }, [answers, data]);
 
   const handleNext = () => {
-    // const currentQuestion = data[currentIndex];
-    // const currentAnswer = answers[currentQuestion.id];
+    const currentQuestion = data[currentIndex];
+    const currentAnswer = answers[currentQuestion.id];
 
-    // // Check if the current question is required and has not been answered
-    // if (currentQuestion.required && !currentAnswer) {
-    //   alert("Please answer the current question before proceeding.");
-    //   return;
-    // }
+    // Check if the current question is required and has not been answered
+    if (currentQuestion.required && !currentAnswer) {
+      console.log('restriction');
+      setAlert("Please answer the current question before proceeding.");
+      return;
+    }
+    if(currentIndex === data.length -1){
+      console.log('Acknowledgment');
+      setAlert("Form Submitted Successfully.");
+    }
+    
 
-    if (currentIndex < data.length - 1) {
+    if (currentIndex < data.length) {
       setCurrentIndex((prev) => prev + 1);
     }
+    
   };
+
   const handlePrev = () => {
     if (currentIndex > 0) {
       setCurrentIndex((prev) => prev - 1);
@@ -68,16 +79,26 @@ const App = () => {
     }));
   };
 
+  const setAlert = (message) => {
+    setAlertMsg(message);
+    setTimeout(() => {
+      setAlertMsg(null);
+    }, 2500);
+  };
+
   return (
-    <>
+    <div className="overflow-x-hidden">
       <Navbar />
+      {alertMsg ? <Alert message={alertMsg} /> : null}
+      {/* <Alert/> */}
 
-      <div className="sm:mx-0 flex justify-center items-center h-[83vh] w-full">
+      {/* <Submit data={data} answers={answers}/> */}
+
+      <div className="sm:mx-0 flex justify-center items-center w-full ">
         <div id="MainContent">
-          <div className="h-44">
-            
-
+          <div className="">
             {data.map((item, i) => {
+              console.log("currentIndex: ", currentIndex);
               if (currentIndex === i) {
                 switch (item.question_type) {
                   case 1:
@@ -133,6 +154,7 @@ const App = () => {
                         answers={answers}
                         handleNext={handleNext}
                         handlePrev={handlePrev}
+                        data={data}
                       />
                     );
                   default:
@@ -147,18 +169,31 @@ const App = () => {
                 }
               }
             })}
+
+            {currentIndex === data.length ? (
+              <Submit answers={answers} data={data} />
+            ) : null}
           </div>
           <br />
-          
         </div>
       </div>
 
+      {/* {currentIndex === data.length ? null : (
+        <Footer
+          progress={progress}
+          data={data}
+          handleNext={handleNext}
+          handlePrev={handlePrev}
+        />
+      )} */}
       <Footer
-        progress={progress}
-        handleNext={handleNext}
-        handlePrev={handlePrev}
-      />
-    </>
+          progress={progress}
+          data={data}
+          currentIndex={currentIndex}
+          handleNext={handleNext}
+          handlePrev={handlePrev}
+        />
+    </div>
   );
 };
 
