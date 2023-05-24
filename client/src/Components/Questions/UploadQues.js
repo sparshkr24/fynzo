@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import star from '../../assets/star.png'
 
 const UploadQues = ({
   question,
@@ -19,9 +20,9 @@ const UploadQues = ({
 
   return (
     <div className="shadow-lg py-16 sm:px-32 px-10 fade-in-bottom mt-32">
-      <div className="text-[#0843a5e3] font-semibold text-lg">
-        Question {currentIndex + 1}
-      </div>
+      <div className="flex items-center inline text-[#0843a5e3] font-semibold text-lg">
+          Question {currentIndex + 1} {question.required?<img className="inline" src={star} alt="required" width={30} />: false}
+        </div>
       <label
         className="text-2xl font-bold text-[#06147ef0]"
         htmlFor="imageUpload"
@@ -46,7 +47,7 @@ const UploadQues = ({
       {currentIndex === data.length - 1 ? (
         <div id="last">
           <button
-            className="disabled:cursor-not-allowed mr-4 py-2 px-12 rounded-2xl bg-red-600 text-white hover:bg-red-700 font-medium"
+            className="disabled:cursor-not-allowed mr-4 py-3 px-16 rounded-2xl bg-green-600 text-white hover:bg-green-700 font-medium hover:scale-110 ease-in-out duration-200 hover:shadow-xl"
             onClick={handleNext}
             disabled={!answers[question.id] && question.required ? true : false}
           >

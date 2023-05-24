@@ -6,7 +6,7 @@ const Submit = ({ answers, data }) => {
   console.log(ansArr);
   return (
     <>
-      <div className="mt-12">
+      <div className="mt-16 sm:mt-12">
         <table>
           <thead>
             <tr>

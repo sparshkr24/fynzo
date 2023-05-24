@@ -62,6 +62,10 @@ const App = () => {
     if (currentIndex < data.length) {
       setCurrentIndex((prev) => prev + 1);
     }
+
+    if(currentIndex === 2 && currentAnswer == 'Male'){
+      setCurrentIndex(data.length)
+    }
     
   };
 

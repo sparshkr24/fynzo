@@ -1,4 +1,5 @@
 import React from "react";
+import star from '../../assets/star.png'
 
 const RadioQues = ({
   question,
@@ -18,8 +19,8 @@ const RadioQues = ({
   return (
     <>
       <div className="shadow-lg py-16 sm:px-32 px-10 fade-in-bottom mt-32">
-        <div className="text-[#0843a5e3] font-semibold text-lg">
-          Question {currentIndex + 1}
+      <div className="flex items-center inline text-[#0843a5e3] font-semibold text-lg">
+          Question {currentIndex + 1} {question.required?<img className="inline" src={star} alt="required" width={30} />: false}
         </div>
         <div className="text-2xl font-bold text-[#06147ef0] mb-4">
           {question.question_text}
